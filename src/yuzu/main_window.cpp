@@ -948,7 +948,15 @@ void MainWindow::InitializeWidgets() {
     ui->horizontalLayout->addWidget(game_list);
 
     nexus_home_screen = new NexusHomeScreen(this);
+    nexus_home_screen->SetGameModel(game_list->GetModel());
     ui->horizontalLayout->addWidget(nexus_home_screen);
+    connect(nexus_home_screen, &NexusHomeScreen::LaunchGameRequested, this,
+            [this](const QString& path, quint64 program_id) {
+                nexus_home_screen->hide();
+                OnGameListLoadFile(path, static_cast<u64>(program_id));
+            });
+    connect(nexus_home_screen, &NexusHomeScreen::ScreenshotRequested, this,
+            &MainWindow::OnCaptureScreenshot);
     game_list->hide();
     connect(nexus_home_screen, &NexusHomeScreen::OpenLibraryRequested, this, [this] {
         nexus_home_screen->hide();
