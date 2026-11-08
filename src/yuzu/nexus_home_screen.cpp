@@ -14,6 +14,8 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QMenu>
+#include <QAction>
 #include <QScrollArea>
 #include <QSettings>
 #include <QStandardItem>
@@ -176,11 +178,13 @@ NexusHomeScreen::NexusHomeScreen(QWidget* parent) : QWidget(parent) {
     auto* album = MakeNavButton(QStringLiteral("▧  Screenshot"), this);
     auto* store = MakeNavButton(QStringLiteral("◇  Store"), this);
     auto* settings_button = MakeNavButton(QStringLiteral("⚙  Settings"), this);
+    auto* quick_settings = MakeNavButton(QStringLiteral("☷  Quick settings"), this);
     nav->addWidget(library);
     nav->addWidget(controllers);
     nav->addWidget(album);
     nav->addWidget(store);
     nav->addWidget(settings_button);
+    nav->addWidget(quick_settings);
     nav->addStretch();
     root->addLayout(nav);
 
@@ -195,6 +199,14 @@ NexusHomeScreen::NexusHomeScreen(QWidget* parent) : QWidget(parent) {
     connect(controllers, &QPushButton::clicked, this, &NexusHomeScreen::SettingsRequested);
     connect(album, &QPushButton::clicked, this, &NexusHomeScreen::ScreenshotRequested);
     connect(store, &QPushButton::clicked, this, &NexusHomeScreen::StoreRequested);
+    auto* quick_menu = new QMenu(quick_settings);
+    quick_menu->addAction(tr("Toggle fullscreen"), this, &NexusHomeScreen::FullscreenRequested);
+    quick_menu->addSeparator();
+    quick_menu->addAction(tr("Volume up"), this, &NexusHomeScreen::VolumeUpRequested);
+    quick_menu->addAction(tr("Volume down"), this, &NexusHomeScreen::VolumeDownRequested);
+    quick_menu->addAction(tr("Mute / unmute"), this, &NexusHomeScreen::MuteRequested);
+    quick_settings->setMenu(quick_menu);
+    quick_settings->setPopupMode(QPushButton::InstantPopup);
     connect(search_edit, &QLineEdit::textChanged, this, &NexusHomeScreen::BuildGameCards);
 
     clock_timer = new QTimer(this);
