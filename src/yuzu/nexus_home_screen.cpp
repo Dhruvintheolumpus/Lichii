@@ -206,7 +206,6 @@ NexusHomeScreen::NexusHomeScreen(QWidget* parent) : QWidget(parent) {
     quick_menu->addAction(tr("Volume down"), this, &NexusHomeScreen::VolumeDownRequested);
     quick_menu->addAction(tr("Mute / unmute"), this, &NexusHomeScreen::MuteRequested);
     quick_settings->setMenu(quick_menu);
-    quick_settings->setPopupMode(QPushButton::InstantPopup);
     connect(search_edit, &QLineEdit::textChanged, this, &NexusHomeScreen::BuildGameCards);
 
     clock_timer = new QTimer(this);
@@ -283,11 +282,11 @@ void NexusHomeScreen::BuildGameCards() {
         card->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
         card->setText(title.isEmpty() ? game->text() : title);
         card->setIcon(QIcon::fromTheme(QStringLiteral("applications-games")));
-        const QIcon game_icon = qvariant_cast<QIcon>(game->data(Qt::DecorationRole));
-        if (!game_icon.isNull())
-            card->setIcon(game_icon);
-        else if (game->data(Qt::DecorationRole).canConvert<QPixmap>())
-            card->setIcon(QIcon(game->data(Qt::DecorationRole).value<QPixmap>()));
+        const QVariant decoration = game->data(Qt::DecorationRole);
+        if (decoration.canConvert<QPixmap>())
+            card->setIcon(QIcon(decoration.value<QPixmap>()));
+        else if (decoration.canConvert<QIcon>())
+            card->setIcon(decoration.value<QIcon>());
         card->setIconSize(QSize(112, 112));
         card->setFixedSize(154, 166);
         card->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
