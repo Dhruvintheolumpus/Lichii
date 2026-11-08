@@ -2,6 +2,10 @@ name: NEXUS OS Windows Build
 
 on:
   workflow_dispatch:
+  push:
+    branches: [nexus-os]
+  pull_request:
+    branches: [nx2]
 
 permissions:
   contents: read
@@ -14,6 +18,7 @@ jobs:
   build-windows:
     name: Build NEXUS OS for Windows x64
     runs-on: windows-2022
+    timeout-minutes: 120
     env:
       SCCACHE_DIR: ${{ github.workspace }}/.sccache
       SCCACHE_CACHE_SIZE: 3G
@@ -61,8 +66,9 @@ jobs:
         uses: actions/cache/restore@v5
         with:
           path: .cache/cpm
-          key: nexus-cpm-windows-v1-${{ hashFiles('cpmfile.json', 'CMakeLists.txt', 'CMakeModules/CPM*.cmake', 'externals/**/CMakeLists.txt', 'src/**/CMakeLists.txt') }}
+          key: nexus-cpm-windows-v2-${{ hashFiles('cpmfile.json', 'CMakeLists.txt', 'CMakeModules/CPM*.cmake', 'externals/**/CMakeLists.txt', 'src/**/CMakeLists.txt') }}
           restore-keys: |
+            nexus-cpm-windows-v2-
             nexus-cpm-windows-v1-
 
       - name: Restore compiler cache
@@ -70,8 +76,9 @@ jobs:
         uses: actions/cache/restore@v5
         with:
           path: .sccache
-          key: nexus-sccache-windows-v1-${{ github.sha }}
+          key: nexus-sccache-windows-v2-${{ github.sha }}
           restore-keys: |
+            nexus-sccache-windows-v2-
             nexus-sccache-windows-v1-
 
       - name: Configure NEXUS OS
@@ -131,7 +138,7 @@ jobs:
         shell: pwsh
         run: |
           $bin = "build/release/bin"
-          foreach ($exe in 'lichii.exe', 'eden-cli.exe') {
+          foreach ($exe in 'lichii.exe', 'yuzu-cmd.exe', 'lichii-updater.exe') {
             if (-not (Test-Path "$bin/$exe")) {
               throw "$bin/$exe was not produced"
             }
@@ -146,6 +153,7 @@ jobs:
           Branch: $env:GITHUB_REF_NAME
           Commit: $env:GITHUB_SHA
           Built by GitHub Actions.
+          Keep all files in this folder together.
           "@ | Set-Content "$bin/README-NEXUS-OS.txt"
           Get-ChildItem $bin
 
