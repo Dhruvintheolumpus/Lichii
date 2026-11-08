@@ -12,6 +12,7 @@
 #include <QHBoxLayout>
 #include <QInputDialog>
 #include <QLabel>
+#include <QList>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QMenu>
@@ -20,6 +21,7 @@
 #include <QSettings>
 #include <QStandardItem>
 #include <QStandardItemModel>
+#include <QVariant>
 #include <QTimer>
 #include <QToolButton>
 #include <QVBoxLayout>
