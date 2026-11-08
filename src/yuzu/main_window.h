@@ -48,6 +48,7 @@
 class QtConfig;
 class EmuThread;
 class GameList;
+class NexusHomeScreen;
 class GImageInfo;
 class GRenderWindow;
 class LoadingScreen;
@@ -518,6 +519,7 @@ private:
 
     GRenderWindow* render_window = nullptr;
     GameList* game_list = nullptr;
+    NexusHomeScreen* nexus_home_screen = nullptr;
     LoadingScreen* loading_screen = nullptr;
     QTimer shutdown_timer;
     QTimer emu_terminate_timer;
