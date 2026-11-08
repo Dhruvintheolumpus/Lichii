@@ -24,6 +24,7 @@
 
 #include "common/fs/ryujinx_compat.h"
 #include "main_window.h"
+#include "nexus_home_screen.h"
 #include "network/network.h"
 #include "qt_common/discord/discord.h"
 #include "ui_main.h"
@@ -945,6 +946,21 @@ void MainWindow::InitializeWidgets() {
     game_list = new GameList(QtCommon::vfs, QtCommon::provider.get(), *play_time_manager,
                              *QtCommon::system, this);
     ui->horizontalLayout->addWidget(game_list);
+
+    nexus_home_screen = new NexusHomeScreen(this);
+    ui->horizontalLayout->addWidget(nexus_home_screen);
+    game_list->hide();
+    connect(nexus_home_screen, &NexusHomeScreen::OpenLibraryRequested, this, [this] {
+        nexus_home_screen->hide();
+        game_list->show();
+        game_list->setFocus();
+    });
+    connect(nexus_home_screen, &NexusHomeScreen::SettingsRequested, this, [this] {
+        ui->action_Configure->trigger();
+    });
+    connect(nexus_home_screen, &NexusHomeScreen::StoreRequested, this, [] {
+        QDesktopServices::openUrl(QUrl(QStringLiteral("https://www.nintendo.com/us/store/games/")));
+    });
 
     game_list_placeholder = new GameListPlaceholder(this);
     ui->horizontalLayout->addWidget(game_list_placeholder);
