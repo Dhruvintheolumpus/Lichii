@@ -20,6 +20,8 @@ endif()
 
 add_executable(yuzu
     Info.plist
+    nexus_home_screen.cpp
+    nexus_home_screen.h
     about_dialog.cpp
     about_dialog.h
     aboutdialog.ui
