@@ -955,6 +955,17 @@ void MainWindow::InitializeWidgets() {
         game_list->show();
         game_list->setFocus();
     });
+    auto* home_action = new QAction(tr("NEXUS HOME"), this);
+    home_action->setShortcut(QKeySequence(QStringLiteral("Ctrl+H")));
+    home_action->setShortcutContext(Qt::WindowShortcut);
+    addAction(home_action);
+    connect(home_action, &QAction::triggered, this, [this] {
+        if (emulation_running || boot_in_progress)
+            return;
+        game_list->hide();
+        nexus_home_screen->show();
+        nexus_home_screen->setFocus();
+    });
     connect(nexus_home_screen, &NexusHomeScreen::SettingsRequested, this, [this] {
         ui->action_Configure->trigger();
     });
