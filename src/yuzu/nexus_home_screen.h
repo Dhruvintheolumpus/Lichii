@@ -23,6 +23,10 @@ signals:
     void SettingsRequested();
     void StoreRequested();
     void ScreenshotRequested();
+    void FullscreenRequested();
+    void VolumeUpRequested();
+    void VolumeDownRequested();
+    void MuteRequested();
     void LaunchGameRequested(const QString& game_path, quint64 program_id);
 
 private:
