@@ -22,6 +22,7 @@ signals:
     void OpenLibraryRequested();
     void SettingsRequested();
     void StoreRequested();
+    void ScreenshotRequested();
     void LaunchGameRequested(const QString& game_path, quint64 program_id);
 
 private:
