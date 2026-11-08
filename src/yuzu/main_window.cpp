@@ -957,6 +957,14 @@ void MainWindow::InitializeWidgets() {
             });
     connect(nexus_home_screen, &NexusHomeScreen::ScreenshotRequested, this,
             &MainWindow::OnCaptureScreenshot);
+    connect(nexus_home_screen, &NexusHomeScreen::FullscreenRequested, this,
+            &MainWindow::ToggleFullscreen);
+    connect(nexus_home_screen, &NexusHomeScreen::VolumeUpRequested, this,
+            &MainWindow::OnIncreaseVolume);
+    connect(nexus_home_screen, &NexusHomeScreen::VolumeDownRequested, this,
+            &MainWindow::OnDecreaseVolume);
+    connect(nexus_home_screen, &NexusHomeScreen::MuteRequested, this,
+            &MainWindow::OnMute);
     game_list->hide();
     connect(nexus_home_screen, &NexusHomeScreen::OpenLibraryRequested, this, [this] {
         nexus_home_screen->hide();
