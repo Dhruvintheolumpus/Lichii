@@ -6,6 +6,9 @@
 #include <algorithm>
 
 #include <QDateTime>
+#include <QFrame>
+#include <QIcon>
+#include <QPixmap>
 #include <QHBoxLayout>
 #include <QInputDialog>
 #include <QLabel>
@@ -170,7 +173,7 @@ NexusHomeScreen::NexusHomeScreen(QWidget* parent) : QWidget(parent) {
     nav->setSpacing(7);
     auto* library = MakeNavButton(QStringLiteral("▦  Game Library"), this);
     auto* controllers = MakeNavButton(QStringLiteral("◉  Controllers"), this);
-    auto* album = MakeNavButton(QStringLiteral("▧  Album"), this);
+    auto* album = MakeNavButton(QStringLiteral("▧  Screenshot"), this);
     auto* store = MakeNavButton(QStringLiteral("◇  Store"), this);
     auto* settings_button = MakeNavButton(QStringLiteral("⚙  Settings"), this);
     nav->addWidget(library);
@@ -190,7 +193,7 @@ NexusHomeScreen::NexusHomeScreen(QWidget* parent) : QWidget(parent) {
     connect(library, &QPushButton::clicked, this, &NexusHomeScreen::OpenLibraryRequested);
     connect(settings_button, &QPushButton::clicked, this, &NexusHomeScreen::SettingsRequested);
     connect(controllers, &QPushButton::clicked, this, &NexusHomeScreen::SettingsRequested);
-    connect(album, &QPushButton::clicked, this, &NexusHomeScreen::SettingsRequested);
+    connect(album, &QPushButton::clicked, this, &NexusHomeScreen::ScreenshotRequested);
     connect(store, &QPushButton::clicked, this, &NexusHomeScreen::StoreRequested);
     connect(search_edit, &QLineEdit::textChanged, this, &NexusHomeScreen::BuildGameCards);
 
@@ -272,7 +275,7 @@ void NexusHomeScreen::BuildGameCards() {
         if (!game_icon.isNull())
             card->setIcon(game_icon);
         else if (game->data(Qt::DecorationRole).canConvert<QPixmap>())
-            card->setIcon(QIcon(QPixmap::fromImage(game->data(Qt::DecorationRole).value<QImage>())));
+            card->setIcon(QIcon(game->data(Qt::DecorationRole).value<QPixmap>()));
         card->setIconSize(QSize(112, 112));
         card->setFixedSize(154, 166);
         card->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
