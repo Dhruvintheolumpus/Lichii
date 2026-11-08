@@ -24,7 +24,7 @@ function Require-Command([string]$Name) {
     }
 }
 
-$repo = Split-Path -Parent $PSScriptRoot
+$repo = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 Set-Location $repo
 
 Write-Host '=== NEXUS OS local Windows build ===' -ForegroundColor Cyan
